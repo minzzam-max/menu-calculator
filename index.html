@@ -139,7 +139,7 @@ body.hand-right .order-row .qty{order:4}
 const defaults=[
 {id:"fishcake",name:"어묵",price:700,category:"꼬치류",bundleQty:3,bundlePrice:2000},
 {id:"heart",name:"염통 꼬치",price:700,category:"꼬치류",bundleQty:3,bundlePrice:2000},
-{id:"ham",name:"소세지 꼬치",price:2500,category:"꼬치류",bundleQty:0,bundlePrice:0},
+{id:"ham",name:"소세지 꼬치",price:2000,category:"꼬치류",bundleQty:0,bundlePrice:0},
 {id:"chicken",name:"닭꼬치",price:2500,category:"꼬치류",bundleQty:0,bundlePrice:0},
 {id:"ricecake",name:"떡꼬치",price:500,category:"꼬치류",bundleQty:0,bundlePrice:0},
 {id:"fishbread",name:"붕어빵",price:700,category:"분식류",bundleQty:3,bundlePrice:2000}
@@ -155,6 +155,11 @@ function readMenus(){
   if(!parsed.some(m=>m.id==="fishbread"))parsed.push(fishbread);
   // 이미 저장된 '햄' 메뉴 이름을 '소세지 꼬치'로 변경
   parsed.forEach(m=>{if(m.id==="ham"&&m.name==="햄")m.name="소세지 꼬치"});
+  // 이미 저장된 소세지 꼬치 가격을 2,000원으로 변경 (한 번만 적용)
+  if(!localStorage.getItem("snack_calc_ham2000")){
+   const h=parsed.find(m=>m.id==="ham");if(h&&h.price===2500)h.price=2000;
+   localStorage.setItem("snack_calc_menus",JSON.stringify(parsed));localStorage.setItem("snack_calc_ham2000","1");
+  }
   // 이미 저장된 목록에서도 떡꼬치와 소세지 꼬치의 위치를 서로 바꿈 (아직 예전 순서일 때만)
   const ri=parsed.findIndex(m=>m.id==="ricecake"),hi=parsed.findIndex(m=>m.id==="ham");
   if(ri>=0&&hi>=0&&ri<hi){const t=parsed[ri];parsed[ri]=parsed[hi];parsed[hi]=t}
