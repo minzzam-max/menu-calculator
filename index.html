@@ -3,62 +3,80 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#173b32">
+<meta name="theme-color" content="#d9cdf3">
 <title>분식집 간편 계산기</title>
 <style>
-:root{--green:#176b50;--dark:#173b32;--bg:#f4f6f3;--line:#e3e9e4;--muted:#718078;--red:#c44d42}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#1d2923;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif}
-button{font:inherit;cursor:pointer;border:0}header{background:var(--dark);color:white;padding:11px 15px;position:sticky;top:0;z-index:4}
+:root{--green:#7e62c9;--dark:#3d2f66;--bg:#f6f3fc;--line:#e6def5;--muted:#7d7396;--red:#c44d42}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#2a2540;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif}
+button{font:inherit;cursor:pointer;border:0}header{background:#d9cdf3;color:var(--dark);padding:11px 15px;position:sticky;top:0;z-index:4}
 .head,main,.total-inner{max-width:760px;margin:auto}.head{display:flex;justify-content:space-between;align-items:center;gap:12px}
-h1{font-size:17px;margin:0 0 2px}.sub{font-size:11px;color:#c5d8ce}.header-btn{background:#ffffff1c;border:1px solid #ffffff35;color:white;border-radius:10px;padding:8px 11px;font-size:13px}
+h1{font-size:17px;margin:0 0 2px}.sub{font-size:11px;color:#5a4a8a}.header-btn{background:#ffffffa0;border:1px solid #ffffffc0;color:var(--dark);border-radius:10px;padding:8px 11px;font-size:13px}
 main{padding:10px 13px 24px}.topline{display:flex;justify-content:space-between;align-items:center;margin:2px 2px 7px}h2{font-size:15px;margin:0}
 .hint{font-size:11px;color:var(--muted)}
 .tabs{display:flex;gap:7px;overflow-x:auto;padding:1px 1px 8px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
-.tab{white-space:nowrap;padding:7px 13px;border-radius:999px;background:#e8eee9;color:#4c5b52;font-size:13px;font-weight:650}
+.tab{white-space:nowrap;padding:7px 13px;border-radius:999px;background:#ece6f8;color:#6a5a96;font-size:13px;font-weight:650}
 .tab.active{background:var(--green);color:white}
 .menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.menu-card{position:relative;min-height:66px;text-align:left;background:white;border:1px solid var(--line);border-radius:13px;padding:10px 12px;display:flex;flex-direction:column;justify-content:space-between;gap:4px;box-shadow:0 2px 6px #15291c08;transition:transform .1s}
-.menu-card:active{transform:scale(.975)}.menu-card.selected{border:2px solid var(--green);padding:9px 11px;background:#f5faf6}
+.menu-card{position:relative;min-height:66px;text-align:left;background:white;border:1px solid var(--line);border-radius:13px;padding:10px 12px;display:flex;flex-direction:column;justify-content:space-between;gap:4px;box-shadow:0 2px 6px #3d2f6610;transition:transform .1s}
+.menu-card:active{transform:scale(.975)}.menu-card.selected{border:2px solid var(--green);padding:9px 11px;background:#f7f3fd}
 .menu-name{font-size:15px;font-weight:800;padding-right:30px}
 .menu-bottom{display:flex;align-items:baseline;justify-content:space-between;gap:6px;flex-wrap:wrap}
 .menu-price{font-size:14px;color:var(--green);font-weight:800}
 .menu-note{font-size:10px;color:var(--muted)}
-.count{position:absolute;right:8px;top:8px;min-width:26px;height:26px;padding:0 6px;border-radius:20px;background:#e9efeb;color:#526158;display:grid;place-items:center;font-size:12px;font-weight:800}
+.count{position:absolute;right:8px;top:8px;min-width:26px;height:26px;padding:0 6px;border-radius:20px;background:#ece6f8;color:#6a5a96;display:grid;place-items:center;font-size:12px;font-weight:800}
 .selected .count{background:var(--green);color:white}
 .order-panel{margin-top:12px;background:white;border:1px solid var(--line);border-radius:14px;padding:10px 13px}
 .order-head{display:flex;align-items:center;gap:6px;margin-bottom:2px}
 .order-total{margin-left:auto;font-size:22px;font-weight:900;color:var(--green)}
+.pay{margin:4px 0 4px;padding:8px 0;border-top:1px solid #efe9f8;border-bottom:1px solid #efe9f8}
+.pay-chips{display:flex;gap:5px}
+.pay-chips button{flex:1;background:#f1ecfb;color:var(--dark);border:1px solid #ddd2f3;border-radius:10px;padding:9px 0;font-size:14px;font-weight:800}
+.pay-chips button:active{transform:scale(.96)}
+.pay-chips .pay-clear{flex:.85;background:#fff0ee;color:var(--red);border-color:#f4d6d2;font-size:13px}
+.pay-result{display:flex;justify-content:space-between;align-items:baseline;margin-top:7px;font-size:13px;color:var(--muted)}
+.pay-result b{font-size:15px;color:#2a2540}
+.pay-change{font-weight:700}
+.pay-change b{font-size:20px;font-weight:900;color:var(--green)}
+.pay-change.short,.pay-change.short b{color:var(--red)}
 .text-btn{background:none;color:var(--red);font-size:12px;padding:5px}
 .empty{color:var(--muted);font-size:13px;text-align:center;padding:14px 5px}
-.order-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #edf0ed}
+.order-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #efe9f8}
 .order-row:last-child{border-bottom:0}
 .order-info{flex:1;min-width:0}.order-name{font-size:14px;font-weight:750}.order-detail{font-size:11px;color:var(--muted);margin-top:2px}
-.qty{display:flex;align-items:center;gap:7px}.qty button{width:28px;height:28px;border-radius:9px;background:#edf3ef;color:var(--dark);font-size:18px;line-height:1}
+.qty{display:flex;align-items:center;gap:7px}.qty button{width:28px;height:28px;border-radius:9px;background:#efe9fa;color:var(--dark);font-size:18px;line-height:1}
 .qty span{min-width:15px;text-align:center;font-size:14px;font-weight:750}.line-total{font-size:13px;font-weight:800;min-width:70px;text-align:right}
 .remove{background:#fff0ee;color:var(--red);width:26px;height:26px;border-radius:8px;font-size:15px}
-.totalbar{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--line);padding:9px 15px calc(9px + env(safe-area-inset-bottom));z-index:5;box-shadow:0 -5px 18px #14251a0d}
+.totalbar{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--line);padding:9px 15px calc(9px + env(safe-area-inset-bottom));z-index:5;box-shadow:0 -5px 18px #3d2f660d}
 .total-inner{display:flex;align-items:center;justify-content:space-between;gap:10px}.total-label{font-size:12px;color:var(--muted)}.total-value{font-size:24px;font-weight:900;color:var(--green);margin-top:1px}
-.reset{background:#edf1ed;color:#33463b;padding:11px 14px;border-radius:11px;font-weight:750}
-.modal-back{display:none;position:fixed;inset:0;background:#0b1712a8;z-index:10;align-items:flex-end;justify-content:center}.modal-back.show{display:flex}
+.reset{background:#efe9fa;color:#4a3d78;padding:11px 14px;border-radius:11px;font-weight:750}
+.modal-back{display:none;position:fixed;inset:0;background:#1a1230a8;z-index:10;align-items:flex-end;justify-content:center}.modal-back.show{display:flex}
 .modal{background:white;width:100%;max-width:600px;max-height:91dvh;overflow:auto;border-radius:20px 20px 0 0;padding:19px 16px calc(22px + env(safe-area-inset-bottom))}
-.modal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}.modal h2{font-size:18px}.close{background:#edf1ed;border-radius:9px;padding:8px 11px}
-.field{display:flex;flex-direction:column;gap:6px;margin:12px 0}.field label{font-size:12px;color:#53635a;font-weight:750}
-input,select{width:100%;padding:12px;border:1px solid #dce4dd;border-radius:10px;font:inherit;font-size:15px;background:white}
+.modal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}.modal h2{font-size:18px}.close{background:#efe9fa;border-radius:9px;padding:8px 11px}
+.field{display:flex;flex-direction:column;gap:6px;margin:12px 0}.field label{font-size:12px;color:#6b5f8c;font-weight:750}
+input,select{width:100%;padding:12px;border:1px solid #ddd4f0;border-radius:10px;font:inherit;font-size:15px;background:white}
 input:focus,select:focus{outline:1px solid var(--green);border-color:var(--green)}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .primary{background:var(--green);color:white;padding:13px;border-radius:11px;font-weight:800;width:100%;margin-top:8px}
 .admin-row{border:1px solid var(--line);border-radius:12px;padding:11px;margin:8px 0;display:flex;align-items:center;gap:8px}
 .admin-info{flex:1;min-width:0}.admin-info strong{font-size:14px}.admin-info small{display:block;color:var(--muted);margin-top:3px}
-.admin-actions{display:flex;gap:5px}.admin-actions button{background:#edf2ee;padding:8px 9px;border-radius:8px;font-size:12px}.admin-actions .del{background:#fff0ee;color:var(--red)}
-.rule{background:#f2f6f2;border-radius:10px;padding:11px;font-size:12px;color:#506158;line-height:1.55;margin:10px 0}
+.admin-actions{display:flex;gap:5px}.admin-actions button{background:#efe9fa;padding:8px 9px;border-radius:8px;font-size:12px}.admin-actions .del{background:#fff0ee;color:var(--red)}
+.rule{background:#f3effb;border-radius:10px;padding:11px;font-size:12px;color:#65588a;line-height:1.55;margin:10px 0}
 .menu-item{display:flex;gap:5px;min-width:0}
 .menu-item .menu-card{flex:1;min-width:0}
 .menu-minus{width:32px;flex:none;border-radius:13px;background:#fff0ee;color:var(--red);border:1px solid #f4d6d2;font-size:20px;font-weight:700;line-height:1}
 .menu-minus:active:not(:disabled){transform:scale(.94)}
 .menu-minus:disabled{opacity:.35;cursor:default}
-.hands{display:inline-flex;margin-top:5px;background:#ffffff1c;border:1px solid #ffffff30;border-radius:9px;overflow:hidden}
-.hands button{background:none;color:#c5d8ce;font-size:12px;font-weight:650;padding:6px 11px}
-.hands button.active{background:white;color:var(--dark)}
+.head-side{display:flex;flex-direction:column;gap:5px;align-items:flex-end}
+body.hand-left .head-side{align-items:flex-start}
+.hands button{flex:none;white-space:nowrap}
+body.hand-left .head h1{text-align:right}
+.head-main{display:flex;flex-direction:column;align-items:flex-start;gap:5px}
+body.hand-left .head-main{align-items:flex-end}
+.wake{background:#ffffffa0;border:1px solid #ffffffc0;color:var(--dark);border-radius:9px;padding:6px 11px;font-size:12px;font-weight:650;white-space:nowrap}
+.wake.on{background:#ffd54a;border-color:#ffd54a;color:#3b2f00}
+.hands{display:flex;margin-top:0;background:#ffffffa0;border:1px solid #ffffffc0;border-radius:9px;overflow:hidden}
+.hands button{background:none;color:#5a4a8a;font-size:12px;font-weight:650;padding:6px 11px}
+.hands button.active{background:var(--green);color:white}
 /* 왼손 버전: 버튼을 왼쪽으로 */
 body.hand-left .head,body.hand-left .total-inner,body.hand-left .modal-top{flex-direction:row-reverse}
 body.hand-left .head>div:first-child,body.hand-left .total-inner>div:first-child{text-align:right}
@@ -75,18 +93,25 @@ body.hand-right .order-row .qty{order:4}
  body.hand-left .menu-grid,body.hand-right .menu-grid{width:78%}
  body.hand-right .menu-grid{margin-left:auto}
  body.hand-left .menu-minus,body.hand-right .menu-minus{width:28px}
- body.hand-left .menu-name,body.hand-right .menu-name{font-size:14px;padding-right:22px}
- body.hand-left .count,body.hand-right .count{min-width:22px;height:22px;font-size:11px;right:7px;top:7px}
+ body.hand-left .menu-card,body.hand-right .menu-card{padding:10px 9px}
+ body.hand-left .menu-card.selected,body.hand-right .menu-card.selected{padding:9px 8px}
+ body.hand-left .menu-name,body.hand-right .menu-name{font-size:13px;padding-right:0;white-space:nowrap}
+ body.hand-left .count,body.hand-right .count{min-width:22px;height:22px;font-size:11px;right:7px;top:auto;bottom:7px}
+ body.hand-left .menu-note,body.hand-right .menu-note{display:none}
 }
 @media(min-width:580px){.menu-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.modal-back{align-items:center}.modal{border-radius:20px}}
 </style>
 </head>
 <body>
-<header><div class="head"><div><h1>분식집 간편 계산기</h1><div class="hands" id="handSwitch" role="group" aria-label="사용 손 선택"><button data-hand="left">왼손</button><button data-hand="normal">기본</button><button data-hand="right">오른손</button></div></div><button class="header-btn" id="settingsOpen">⚙ 메뉴 설정</button></div></header>
+<header><div class="head"><div class="head-main"><h1>분식집 간편 계산기</h1><button class="wake" id="wakeBtn" aria-pressed="false">☀ 화면 유지</button></div><div class="head-side"><button class="header-btn" id="settingsOpen">⚙ 메뉴 설정</button><div class="hands" id="handSwitch" role="group" aria-label="사용 손 선택"><button data-hand="left">왼손</button><button data-hand="normal">기본</button><button data-hand="right">오른손</button></div></div></div></header>
 <main>
  <div class="menu-grid" id="menuGrid"></div>
  <section class="order-panel">
   <div class="order-head"><h2>계산 내역</h2><button class="text-btn" id="clearOrder">전체 비우기</button><div class="order-total" id="grandTotal">0원</div></div>
+  <div class="pay">
+   <div class="pay-chips"><button data-amt="1000">1천</button><button data-amt="5000">5천</button><button data-amt="10000">1만</button><button data-amt="50000">5만</button><button class="pay-clear" id="payClear">지움</button></div>
+   <div class="pay-result"><span>받은 돈 <b id="recvVal">0원</b></span><span class="pay-change" id="changeBox"><span id="changeLabel">거스름돈</span> <b id="changeVal">-</b></span></div>
+  </div>
   <div id="orderList" class="empty">메뉴를 선택하면 계산 내역이 표시됩니다.</div>
  </section>
 </main>
@@ -114,9 +139,9 @@ body.hand-right .order-row .qty{order:4}
 const defaults=[
 {id:"fishcake",name:"어묵",price:700,category:"꼬치류",bundleQty:3,bundlePrice:2000},
 {id:"heart",name:"염통 꼬치",price:700,category:"꼬치류",bundleQty:3,bundlePrice:2000},
-{id:"ricecake",name:"떡꼬치",price:500,category:"꼬치류",bundleQty:0,bundlePrice:0},
+{id:"ham",name:"소세지 꼬치",price:2500,category:"꼬치류",bundleQty:0,bundlePrice:0},
 {id:"chicken",name:"닭꼬치",price:2500,category:"꼬치류",bundleQty:0,bundlePrice:0},
-{id:"ham",name:"햄",price:2500,category:"꼬치류",bundleQty:0,bundlePrice:0},
+{id:"ricecake",name:"떡꼬치",price:500,category:"꼬치류",bundleQty:0,bundlePrice:0},
 {id:"fishbread",name:"붕어빵",price:700,category:"분식류",bundleQty:3,bundlePrice:2000}
 ];
 const $=id=>document.getElementById(id);
@@ -128,6 +153,11 @@ function readMenus(){
   // 기존 사용자의 메뉴 설정은 유지하고, 새 기본 메뉴만 없는 경우 추가
   const fishbread=defaults.find(m=>m.id==="fishbread");
   if(!parsed.some(m=>m.id==="fishbread"))parsed.push(fishbread);
+  // 이미 저장된 '햄' 메뉴 이름을 '소세지 꼬치'로 변경
+  parsed.forEach(m=>{if(m.id==="ham"&&m.name==="햄")m.name="소세지 꼬치"});
+  // 이미 저장된 목록에서도 떡꼬치와 소세지 꼬치의 위치를 서로 바꿈 (아직 예전 순서일 때만)
+  const ri=parsed.findIndex(m=>m.id==="ricecake"),hi=parsed.findIndex(m=>m.id==="ham");
+  if(ri>=0&&hi>=0&&ri<hi){const t=parsed[ri];parsed[ri]=parsed[hi];parsed[hi]=t}
   return parsed;
  }catch(e){return defaults}
 }
@@ -148,6 +178,16 @@ function render(){
   wrap.append(b,mb);grid.appendChild(wrap);
  });renderOrder();
 }
+let received=0,lastTotal=0;
+function renderPay(){
+ $("recvVal").textContent=money(received);
+ const box=$("changeBox"),lab=$("changeLabel"),val=$("changeVal");
+ box.classList.remove("short");
+ if(!received){lab.textContent="거스름돈";val.textContent="-";return}
+ const diff=received-lastTotal;
+ if(diff<0){box.classList.add("short");lab.textContent="부족";val.textContent=money(-diff)}
+ else{lab.textContent="거스름돈";val.textContent=money(diff)}
+}
 function renderOrder(){
  const box=$("orderList");box.innerHTML="";let total=0,has=false;
  menus.forEach(m=>{const q=order[m.id]||0;if(!q)return;has=true;const sum=calc(m,q);total+=sum;
@@ -157,7 +197,7 @@ function renderOrder(){
   row.querySelector(".minus").onclick=()=>{order[m.id]--;if(order[m.id]<=0)delete order[m.id];render()};row.querySelector(".plus").onclick=()=>{order[m.id]++;render()};row.querySelector(".remove").onclick=()=>{delete order[m.id];render()};box.appendChild(row);
  });
  if(!has){box.className="empty";box.textContent="메뉴를 선택하면 계산 내역이 표시됩니다."}else box.className="";
- $("grandTotal").textContent=money(total);
+ $("grandTotal").textContent=money(total);lastTotal=total;renderPay();
 }
 function openSettings(){renderAdmin();$("settingsModal").classList.add("show")}
 function renderAdmin(){
@@ -178,7 +218,7 @@ $("saveMenu").onclick=()=>{
  else menus.push({id:"m"+Date.now(),name,price,category:cat,bundleQty:bq,bundlePrice:bp});
  save();render();renderAdmin();$("editModal").classList.remove("show");
 };
-$("clearOrder").onclick=()=>{if(Object.keys(order).length&&confirm("현재 계산 내역을 모두 비울까요?")){order={};render()}};
+$("clearOrder").onclick=()=>{order={};received=0;render()};
 let hand="normal";
 try{hand=localStorage.getItem("snack_calc_hand")||"normal"}catch(e){}
 if(!["left","right","normal"].includes(hand))hand="normal";
@@ -190,6 +230,34 @@ function setHand(h){
 }
 document.querySelectorAll("#handSwitch button").forEach(b=>b.onclick=()=>setHand(b.dataset.hand));
 setHand(hand);
+
+// 화면 꺼짐 방지 (Screen Wake Lock)
+let wakeLock=null,wakeWanted=false;
+async function requestWake(){
+ try{wakeLock=await navigator.wakeLock.request("screen");wakeLock.addEventListener("release",()=>{wakeLock=null});return true}
+ catch(e){wakeLock=null;return false}
+}
+function updateWakeBtn(){
+ const b=$("wakeBtn");b.classList.toggle("on",wakeWanted);
+ b.textContent=wakeWanted?"☀ 화면 유지 ON":"☀ 화면 유지";b.setAttribute("aria-pressed",wakeWanted);
+}
+async function toggleWake(){
+ if(!("wakeLock" in navigator)){alert("이 브라우저는 화면 꺼짐 방지를 지원하지 않습니다.");return}
+ if(wakeWanted){wakeWanted=false;try{if(wakeLock)await wakeLock.release()}catch(e){}wakeLock=null}
+ else{
+  const ok=await requestWake();
+  if(!ok){alert("화면 꺼짐 방지를 켜지 못했습니다. 절전 모드를 끄고 다시 눌러주세요.");return}
+  wakeWanted=true;
+ }
+ updateWakeBtn();
+}
+// 다른 앱에 다녀오면 화면 유지가 풀리므로, 돌아왔을 때 다시 켬
+document.addEventListener("visibilitychange",()=>{if(wakeWanted&&document.visibilityState==="visible"&&!wakeLock)requestWake()});
+$("wakeBtn").onclick=toggleWake;
+
+// 받은 돈 버튼 (누를 때마다 금액이 더해짐)
+document.querySelectorAll(".pay-chips button[data-amt]").forEach(b=>b.onclick=()=>{received+=Number(b.dataset.amt);renderPay()});
+$("payClear").onclick=()=>{received=0;renderPay()};
 render();
 </script>
 </body></html>
